@@ -8,9 +8,11 @@ import (
 	"io"
 	"net"
 	"net/http"
+	"net/http/httptrace"
 	"strings"
 	"sync"
 	"sync/atomic"
+	"time"
 
 	"golang.org/x/net/http/httpguts"
 
@@ -114,6 +116,30 @@ var (
 // ErrNoCachedConn is returned when RoundTripper.OnlyCachedConn is set
 var ErrNoCachedConn = errors.New("http3: no cached connection was available")
 
+// fakeConn is a wrapper for quic.EarlyConnection
+// because the quic connection does not implement net.Conn.
+type fakeConn struct {
+	conn quic.EarlyConnection
+}
+
+func (c *fakeConn) Close() error                       { panic("connection operation prohibited") }
+func (c *fakeConn) Read(p []byte) (int, error)         { panic("connection operation prohibited") }
+func (c *fakeConn) Write(p []byte) (int, error)        { panic("connection operation prohibited") }
+func (c *fakeConn) SetDeadline(t time.Time) error      { panic("connection operation prohibited") }
+func (c *fakeConn) SetReadDeadline(t time.Time) error  { panic("connection operation prohibited") }
+func (c *fakeConn) SetWriteDeadline(t time.Time) error { panic("connection operation prohibited") }
+func (c *fakeConn) RemoteAddr() net.Addr               { return c.conn.RemoteAddr() }
+func (c *fakeConn) LocalAddr() net.Addr                { return c.conn.LocalAddr() }
+
+func traceGotConn(trace *httptrace.ClientTrace, conn quic.EarlyConnection, reused bool) {
+	if trace != nil && trace.GotConn != nil {
+		trace.GotConn(httptrace.GotConnInfo{
+			Conn:   &fakeConn{conn: conn},
+			Reused: reused,
+		})
+	}
+}
+
 // RoundTripOpt is like RoundTrip, but takes options.
 func (r *RoundTripper) RoundTripOpt(req *http.Request, opt RoundTripOpt) (*http.Response, error) {
 	r.initOnce.Do(func() { r.initErr = r.init() })
@@ -169,6 +195,7 @@ func (r *RoundTripper) RoundTripOpt(req *http.Request, opt RoundTripOpt) (*http.
 		r.removeClient(hostname)
 		return nil, cl.dialErr
 	}
+	traceGotConn(httptrace.ContextClientTrace(req.Context()), cl.conn, isReused)
 	defer cl.useCount.Add(-1)
 	rsp, err := cl.rt.RoundTrip(req)
 	if err != nil {
