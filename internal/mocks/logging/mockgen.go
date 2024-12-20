@@ -6,7 +6,7 @@ import (
 	"net"
 	"time"
 
-	"github.com/quic-go/quic-go/logging"
+	"github.com/xtls/quic-go/logging"
 )
 
 //go:generate sh -c "go run go.uber.org/mock/mockgen -typed -build_flags=\"-tags=gomock\" -package internal -destination internal/tracer.go github.com/quic-go/quic-go/internal/mocks/logging Tracer"

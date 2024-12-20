@@ -4,8 +4,8 @@ import (
 	"context"
 	"sync"
 
-	"github.com/quic-go/quic-go/internal/protocol"
-	"github.com/quic-go/quic-go/internal/wire"
+	"github.com/xtls/quic-go/internal/protocol"
+	"github.com/xtls/quic-go/internal/wire"
 )
 
 type outgoingStream interface {

@@ -3,7 +3,7 @@ package utils
 import (
 	"time"
 
-	"github.com/quic-go/quic-go/internal/protocol"
+	"github.com/xtls/quic-go/internal/protocol"
 )
 
 const (

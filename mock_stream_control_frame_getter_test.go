@@ -12,7 +12,7 @@ package quic
 import (
 	reflect "reflect"
 
-	ackhandler "github.com/quic-go/quic-go/internal/ackhandler"
+	ackhandler "github.com/xtls/quic-go/internal/ackhandler"
 	gomock "go.uber.org/mock/gomock"
 )
 

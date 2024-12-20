@@ -14,7 +14,7 @@ import (
 	reflect "reflect"
 	time "time"
 
-	protocol "github.com/quic-go/quic-go/internal/protocol"
+	protocol "github.com/xtls/quic-go/internal/protocol"
 	gomock "go.uber.org/mock/gomock"
 )
 

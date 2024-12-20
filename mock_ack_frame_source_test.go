@@ -12,8 +12,8 @@ package quic
 import (
 	reflect "reflect"
 
-	protocol "github.com/quic-go/quic-go/internal/protocol"
-	wire "github.com/quic-go/quic-go/internal/wire"
+	protocol "github.com/xtls/quic-go/internal/protocol"
+	wire "github.com/xtls/quic-go/internal/wire"
 	gomock "go.uber.org/mock/gomock"
 )
 
