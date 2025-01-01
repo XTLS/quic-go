@@ -10,9 +10,9 @@ import (
 
 	"golang.org/x/exp/rand"
 
-	"github.com/quic-go/quic-go/internal/protocol"
-	"github.com/quic-go/quic-go/internal/qerr"
-	"github.com/quic-go/quic-go/quicvarint"
+	"github.com/xtls/quic-go/internal/protocol"
+	"github.com/xtls/quic-go/internal/qerr"
+	"github.com/xtls/quic-go/quicvarint"
 
 	"github.com/stretchr/testify/require"
 )

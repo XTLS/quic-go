@@ -3,9 +3,9 @@ package ackhandler
 import (
 	"fmt"
 
-	"github.com/quic-go/quic-go/internal/protocol"
-	"github.com/quic-go/quic-go/internal/utils"
-	"github.com/quic-go/quic-go/logging"
+	"github.com/xtls/quic-go/internal/protocol"
+	"github.com/xtls/quic-go/internal/utils"
+	"github.com/xtls/quic-go/logging"
 )
 
 type ecnState uint8

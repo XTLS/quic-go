@@ -4,9 +4,9 @@ import (
 	"net"
 	"testing"
 
-	mocklogging "github.com/quic-go/quic-go/internal/mocks/logging"
-	"github.com/quic-go/quic-go/internal/protocol"
-	. "github.com/quic-go/quic-go/logging"
+	mocklogging "github.com/xtls/quic-go/internal/mocks/logging"
+	"github.com/xtls/quic-go/internal/protocol"
+	. "github.com/xtls/quic-go/logging"
 
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"

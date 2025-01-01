@@ -5,7 +5,7 @@ import (
 	"net"
 	"sync"
 
-	"github.com/quic-go/quic-go/internal/utils"
+	"github.com/xtls/quic-go/internal/utils"
 )
 
 var (

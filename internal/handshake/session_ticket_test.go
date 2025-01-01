@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/quic-go/quic-go/internal/wire"
-	"github.com/quic-go/quic-go/quicvarint"
+	"github.com/xtls/quic-go/internal/wire"
+	"github.com/xtls/quic-go/quicvarint"
 
 	"github.com/stretchr/testify/require"
 )
