@@ -293,11 +293,20 @@ func (c *ClientConn) sendRequestBody(str Stream, body io.ReadCloser, contentLeng
 	return err
 }
 
+func traceWroteRequest(ctx context.Context, err error) {
+	trace := httptrace.ContextClientTrace(ctx)
+	if trace != nil && trace.WroteRequest != nil {
+		trace.WroteRequest(httptrace.WroteRequestInfo{Err: err})
+	}
+}
+
 func (c *ClientConn) doRequest(req *http.Request, str *requestStream) (*http.Response, error) {
 	if err := str.SendRequestHeader(req); err != nil {
+		traceWroteRequest(req.Context(), err)
 		return nil, err
 	}
 	if req.Body == nil {
+		traceWroteRequest(req.Context(), nil)
 		str.Close()
 	} else {
 		// send the request body asynchronously
@@ -308,7 +317,9 @@ func (c *ClientConn) doRequest(req *http.Request, str *requestStream) (*http.Res
 			if req.ContentLength > 0 {
 				contentLength = req.ContentLength
 			}
-			if err := c.sendRequestBody(str, req.Body, contentLength); err != nil {
+			err := c.sendRequestBody(str, req.Body, contentLength)
+			traceWroteRequest(req.Context(), err)
+			if err != nil {
 				if c.logger != nil {
 					c.logger.Debug("error writing request", "error", err)
 				}
